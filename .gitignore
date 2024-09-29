@@ -1,0 +1,12 @@
+*.pyc
+.DS_Store
+venv
+.env
+.coverage
+__pycache__/*
+
+/docker-compose/postgres/data
+*.sqlite
+*.sqlite3
+
+staticfiles/
