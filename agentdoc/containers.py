@@ -4,6 +4,8 @@ from langchain_core.runnables.base import RunnableSequence
 from langchain_ollama.llms import OllamaLLM
 from langchain_openai import ChatOpenAI
 
+from agentdoc.agents import TextExtractionAgent
+
 from .config import Settings
 
 
@@ -38,6 +40,14 @@ class Container(containers.DeclarativeContainer):
         production=production_llm,
     )
 
+    # =========================================================================
+    # Text extraction Agent
+    # =========================================================================
+    text_extraction_agent = providers.Singleton(TextExtractionAgent)
+
+    # =========================================================================
+    # Summarization Agent
+    # =========================================================================
     summarization_prompt = providers.Singleton(
         ChatPromptTemplate.from_template,
         (
