@@ -3,7 +3,7 @@
 venv
 .env
 .coverage
-__pycache__/*
+*__pycache__/*
 
 /docker-compose/postgres/data
 *.sqlite
