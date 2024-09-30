@@ -2,8 +2,17 @@ from dependency_injector import containers, providers
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables.base import RunnableSequence
 from langchain_ollama.llms import OllamaLLM
+from langchain_openai import ChatOpenAI
 
 from .config import Settings
+
+
+# TODO: Find a better solution
+class ChatOpenAIWithContent(ChatOpenAI):
+    def invoke(self, input, config):
+        response = super().invoke(input, config)
+
+        return response.content
 
 
 class Container(containers.DeclarativeContainer):
@@ -15,9 +24,18 @@ class Container(containers.DeclarativeContainer):
         model=config.llm_model,
     )
 
+    production_llm = providers.Singleton(
+        ChatOpenAIWithContent,
+        model=config.llm_model,
+        api_key=config.openai_api_key,
+        temperature=0,
+        max_retries=2,
+    )
+
     llm = providers.Selector(
         config.environment,
         local=local_llm,
+        production=production_llm,
     )
 
     summarization_prompt = providers.Singleton(

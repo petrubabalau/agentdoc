@@ -43,4 +43,5 @@ def hello_world():
             "input_text": TEXT,
         },
     )
+
     return f"{result}"
